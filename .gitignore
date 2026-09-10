@@ -1,0 +1,41 @@
+# Controlled or generated data
+data/
+outputs/
+checkpoints/
+logs/
+reports/
+
+# Model and array artifacts
+*.ckpt
+*.pt
+*.pth
+*.safetensors
+*.npy
+*.npz
+*.mmap
+
+# Participant-level tabular outputs
+*.csv
+*.parquet
+*.feather
+
+# Images and archives
+*.jpg
+*.jpeg
+*.png
+*.tif
+*.tiff
+*.zip
+*.tar
+*.tar.gz
+
+# Python and editor state
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+.vscode/
+.idea/
+.DS_Store

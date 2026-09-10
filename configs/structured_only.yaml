@@ -1,0 +1,110 @@
+experiment:
+  seed: 42
+
+data:
+  input_modalities:
+    - gender
+    - age
+    - iop
+    - prs
+    - anthropometrics
+    - family_history
+    - principal_components
+    - lifestyle
+    - mental_health
+    - socioeconomic
+    - vitals
+  diseases: [glaucoma, ad, pd, cvd, t2d]
+  progression_label_years: [0, 2, 5, 10]
+  progression_label_ignorant_label_years: 1
+  ukb_processed_df_path: data/ukb/foresight_omni_manifest.parquet
+  use_combined_dataset: false
+  algo_qc: true
+  algo_qc_path: data/ukb/algorithmic_qc.csv
+  num_samples: 16000
+  imbalanced: false
+  hybrid_sampler: true
+  hybrid_coverage_per_batch: 96
+
+validation:
+  val_ci_bootstrap: 0
+  val_ci_freq: 0
+  test_ci_bootstrap: 0
+  two_tier_validation: true
+  fast_val_size: 8000
+  full_val_freq: 5
+  full_val_candidate_delta: 0.001
+  model_selection_min_positives: 10
+  model_selection_labels:
+    - "=glaucoma_0"
+    - "=glaucoma_2"
+    - "=glaucoma_5"
+    - "=glaucoma_10"
+    - "=ad_0"
+    - "=ad_2"
+    - "=ad_5"
+    - "=ad_10"
+    - "=pd_0"
+    - "=pd_2"
+    - "=pd_5"
+    - "=pd_10"
+    - "=cvd_0"
+    - "=cvd_2"
+    - "=cvd_5"
+    - "=cvd_10"
+    - "=t2d_0"
+    - "=t2d_2"
+    - "=t2d_5"
+    - "=t2d_10"
+  save_val_predictions_freq: 0
+  plot_freq: 0
+
+model:
+  dim: 256
+  n_layers: 4
+  n_heads: 4
+  disease_label_tokens: 1
+  patch_size: 16
+  container: bracket
+  attn_dropout_p: 0.1
+  ff_dropout_p: 0.2
+
+training:
+  epochs: 40
+  batch_size: 128
+  train_batch_size: 128
+  val_batch_size: 256
+  test_batch_size: 256
+  backbone_lr: 1.0e-6
+  head_lr: 1.0e-4
+  optimizer_type: adamw
+  weight_decay: 1.0e-2
+  freeze_backbone_epochs: 40
+  lr_scheduler: true
+  scheduler_type: cosine
+  warmup_ratio: 0.10
+  modality_dropout_schedule: linear
+  modality_dropout_start_p: 0.0
+  modality_dropout_start_epoch: 1
+  modality_dropout_end_epoch: 10
+  modality_dropout_p: 0.15
+  val_freq: 1
+  inspecting: true
+  early_stop: true
+  early_stop_min_epoch: 10
+  patience: 5
+  best_model_buffer_size: 5
+  model_selection_metric: mean_auroc
+  enhanced_aug: true
+  fundus_aug_profile: kim_enhanced
+  num_workers: 8
+  eval_num_workers: 2
+  pin_memory: true
+  persistent_workers: true
+  prefetch_factor: 2
+  multiprocessing_sharing_strategy: file_system
+  skip_final_test: true
+
+compatibility:
+  image_size: 224
+  image_encoder_type: conv_token
